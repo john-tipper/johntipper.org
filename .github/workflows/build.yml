@@ -54,14 +54,14 @@ jobs:
       - name: Synth CDK
         run: |
           cdk synth \
-          --app 'java -jar ./infrastructure/build/cdk/infrastructure-all.jar -apiLambdaPath ./infrastructure/build/cdk/api-lambdas.zip -webAssets ./infrastructure/build/cdk/web -domainName johntipper.org -region ${{ secrets.AWS_REGION }} -targetAccount ${{ AWS_ACCOUNT }}' \
+          --app 'java -jar ./infrastructure/build/cdk/infrastructure-all.jar -apiLambdaPath ./infrastructure/build/cdk/api-lambdas.zip -webAssets ./infrastructure/build/cdk/web -domainName johntipper.org -region ${{ secrets.AWS_REGION }} -targetAccount ${{ secrets.AWS_TARGET_ACCOUNT }}' \
           --profile blog \
           --output build/cdk.out
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+          AWS_TARGET_ACCOUNT: ${{ secrets.AWS_TARGET_ACCOUNT }}
 
 #      - name: Deploy CDK
 #        run: |
