@@ -1,6 +1,6 @@
 # Website via CDK
 
-https://github.com/john-tipper/johntipper.org/workflows/build/badge.svg
+![Build status](https://github.com/john-tipper/johntipper.org/workflows/build/badge.svg "GitHub Actions Build Status")
 
 ## Build
 
