@@ -87,7 +87,7 @@ Now we're ready to define some steps which will build our project's CDK and gene
 
 ```yaml
       - name: Build with Gradle
-        run: ./gradlew cdkPrepare
+        run: ./gradlew build
 
       - name: Build Gatsby
         run: |
@@ -103,6 +103,7 @@ Next step is to synthesize the CDK stack, which, as you'll recall, requires AWS 
 ```yaml
       - name: Synth CDK
         run: |
+          ./gradlew cdkPrepare
           cdk synth \
           --app 'java -jar ./infrastructure/build/cdk/infrastructure-all.jar -apiLambdaPath ./infrastructure/build/cdk/api-lambdas.zip -webAssets ./infrastructure/build/cdk/web -domainName johntipper.org -region ${{ secrets.AWS_REGION }} -targetAccount ${{ secrets.AWS_TARGET_ACCOUNT }}' \
           --profile blog \
