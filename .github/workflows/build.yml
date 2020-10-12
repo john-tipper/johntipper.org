@@ -64,11 +64,11 @@ jobs:
           AWS_TARGET_ACCOUNT: ${{ secrets.AWS_TARGET_ACCOUNT }}
 
       - name: Save synthesized CDK
-          uses: actions/upload-artifact@v2
-          with:
-            name: cdk-synthesis
-            path: build/cdk.out/**/*
-            retention-days: 2
+        uses: actions/upload-artifact@v2
+        with:
+          name: cdk-synthesis
+          path: build/cdk.out/**/*
+          retention-days: 2
 
   deploy:
     runs-on: ubuntu-latest
