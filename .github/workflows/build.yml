@@ -3,7 +3,7 @@ name: Build
 on: [push]
 
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -22,9 +22,9 @@ jobs:
             ${{ runner.OS }}-node-
             ${{ runner.OS }}-
 
-      - name: Install CDK
+      - name: Install CDK and Gatsby
         run: |
-          npm install -g aws-cdk@1.62.0
+          npm install -g aws-cdk@1.62.0 gatsby-cli
 
 
       - name: Set up JDK 1.11

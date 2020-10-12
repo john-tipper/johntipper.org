@@ -377,6 +377,7 @@ BucketDeployment websiteContent = BucketDeployment.Builder.create(this, "Website
                                                           .destinationBucket(websiteBucket)
                                                           .sources(List.of(Source.asset(stackConfig.getWebsiteAssetsPath())))
                                                           .distribution(cloudFrontWebDistribution)
+                                                          .distributionPaths(List.of("/*"))
                                                           .memoryLimit(2048)
                                                           .build();
 
