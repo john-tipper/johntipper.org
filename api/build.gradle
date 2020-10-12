@@ -1,0 +1,64 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id "org.openapi.generator" version "4.2.3"
+
+}
+
+dependencies {
+    implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
+    implementation 'com.amazonaws:aws-lambda-java-events:3.1.0'
+
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+    implementation 'org.openapitools:jackson-databind-nullable:0.2.1'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
+}
+
+openApiGenerate{
+    generatorName = "spring"
+    inputSpec = rootProject.file("api.yaml").toString()
+    outputDir = "${buildDir}/openapi"
+    configFile = project.file("java-config.json").toString()
+    systemProperties = [
+            modelDocs: "false",
+            apis: "false",
+            supportingFiles: "false",
+            models: ""
+    ]
+    skipValidateSpec = true
+    logToStderr = true
+    generateAliasAsModel = false
+    // set to true and set environment variable {LANG}_POST_PROCESS_FILE
+    // (e.g. SCALA_POST_PROCESS_FILE) to the linter/formatter to be processed.
+    // This command will be passed one file at a time for most supported post processors.
+    enablePostProcessFile = false
+}
+
+compileJava.dependsOn tasks.openApiGenerate
+
+
+sourceSets {
+    main {
+        output.resourcesDir = java.outputDir
+        java {
+            srcDir "${buildDir}/openapi/src/main/java"
+        }
+
+        resources {
+            srcDir "${buildDir}/openapi/src/main/resources"
+        }
+    }
+}
+
+task buildLambdaZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtimeClasspath
+    }
+}
+
+build.dependsOn buildLambdaZip

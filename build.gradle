@@ -1,0 +1,29 @@
+plugins {
+  id 'java-library'
+}
+
+group 'org.johntipper'
+version = "0.1.0-SNAPSHOT"
+
+wrapper {
+    gradleVersion = "6.3"
+    distributionType = Wrapper.DistributionType.ALL
+}
+
+allprojects {
+    configurations.all {
+        resolutionStrategy {
+            // cache dynamic versions for 5 minutes
+            cacheDynamicVersionsFor 5*60, 'seconds'
+            // don't cache changing modules at all
+            cacheChangingModulesFor 0, 'seconds'
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    group = rootProject.group
+    version = rootProject.version
+}

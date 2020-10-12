@@ -40,17 +40,17 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
 
-#      - name: Build with Gradle
-#        run: ./gradlew cdkPrepare
-#
-#      - name: Build Gatsby
-#        run: |
-#          pushd web
-#          npm ci
-#          gatsby clean
-#          gatsby build
-#          popd
-#
+      - name: Build with Gradle
+        run: ./gradlew cdkPrepare
+
+      - name: Build Gatsby
+        run: |
+          pushd web
+          npm ci
+          gatsby clean
+          gatsby build
+          popd
+
 #      - name: Synth CDK
 #        run: |
 #          cdk synth \

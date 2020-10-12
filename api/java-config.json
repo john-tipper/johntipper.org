@@ -1,0 +1,8 @@
+{
+  "modelPackage": "org.johntipper.blog.api",
+  "dateLibrary": "java8",
+  "hideGenerationTimestamp": true,
+  "library": "spring-boot",
+  "serializationLibrary": "jackson",
+  "java8": true
+}

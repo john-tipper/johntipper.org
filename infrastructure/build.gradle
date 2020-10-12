@@ -1,0 +1,56 @@
+plugins {
+    id 'java-library'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+
+}
+
+def CDK_VERSION = "1.60.0"
+
+dependencies {
+    implementation "software.amazon.awscdk:core:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:route53:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:route53-targets:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:route53-patterns:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:ses:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:certificatemanager:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:s3:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:s3-deployment:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:cloudfront:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:apigateway:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:dynamodb:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:events:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:events-targets:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:lambda:${CDK_VERSION}"
+    implementation "software.amazon.awscdk:lambda-event-sources:${CDK_VERSION}"
+
+    implementation 'commons-cli:commons-cli:1.4'
+    implementation 'org.slf4j:slf4j-log4j12:1.7.28'
+    implementation 'com.github.spullara.mustache.java:compiler:0.9.6'
+    implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.10.4'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+application {
+    mainClassName = 'org.johntipper.blog.aws.cdk.webapp.WebBackendApp'
+}
+
+
+task cdkPrepare(type: Copy) {
+    dependsOn ':api:buildLambdaZip', 'shadowJar'
+    from(file("../api/build/distributions/api-${project.version}.zip")) {
+        rename { "api-lambdas.zip" }
+    }
+    from(shadowJar.outputs) {
+        rename { "infrastructure-all.jar" }
+    }
+
+    from(file("../web/public/")) {
+        into "web"
+    }
+
+
+    into "${buildDir}/cdk"
+
+}

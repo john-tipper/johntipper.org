@@ -1,0 +1,9 @@
+name: John Tipper
+bio: |
+  I’m a Senior Software Engineer working in financial services specialising in cloud engineering, big data stream processing and DevOps. Once upon a time I was a military helicopter pilot but at some point I grew up and decided to get a proper job; I've just got pictures of that life now.
+avatar: ./avatars/john-tipper.jpg
+social:
+  - url: https://twitter.com/john_tipper
+  - url: https://github.com/john-tipper
+  - url: https://www.linkedin.com/in/john-tipper-5076395/
+featured: true
