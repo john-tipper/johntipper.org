@@ -63,12 +63,29 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_TARGET_ACCOUNT: ${{ secrets.AWS_TARGET_ACCOUNT }}
 
-#      - name: Deploy CDK
-#        run: |
-#          cdk deploy --app ./build/cdk.out --require-approval never "*"
-#        if: github.ref == 'refs/heads/master'
-#        env:
-#          AWS_REGION: ${{ secrets.AWS_REGION }}
-#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: Save synthesized CDK
+          uses: actions/upload-artifact@v2
+          with:
+            name: cdk-synthesis
+            path: build/cdk.out/**/*
+            retention-days: 2
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download synthesized CDK
+        uses: actions/download-artifact@v2
+        with:
+          name: cdk-synthesis
+
+      - name: Deploy CDK
+        run: |
+          cdk deploy --app ./build/cdk.out --require-approval never "*"
+        if: github.ref == 'refs/heads/master'
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 

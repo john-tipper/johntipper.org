@@ -106,7 +106,6 @@ Next step is to synthesize the CDK stack, which, as you'll recall, requires AWS 
           ./gradlew cdkPrepare
           cdk synth \
           --app 'java -jar ./infrastructure/build/cdk/infrastructure-all.jar -apiLambdaPath ./infrastructure/build/cdk/api-lambdas.zip -webAssets ./infrastructure/build/cdk/web -domainName johntipper.org -region ${{ secrets.AWS_REGION }} -targetAccount ${{ secrets.AWS_TARGET_ACCOUNT }}' \
-          --profile blog \
           --output build/cdk.out
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
