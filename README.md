@@ -1,4 +1,6 @@
-# Website via CDK
+# My personal blog website, built using AWS CDK and deployed via GitHub Actions
+
+## GitHub Actions Build Status
 
 ![Build status](https://github.com/john-tipper/johntipper.org/workflows/Build/badge.svg "GitHub Actions Build Status")
 

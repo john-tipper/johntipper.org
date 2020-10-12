@@ -98,6 +98,23 @@ Now we're ready to define some steps which will build our project's CDK and gene
           popd
 ```
 
+Next step is to synthesize the CDK stack, which, as you'll recall, requires AWS credentials to perform a Route53 HostedZone lookup.
+
+```yaml
+      - name: Synth CDK
+        run: |
+          cdk synth \
+          --app 'java -jar ./infrastructure/build/cdk/infrastructure-all.jar -apiLambdaPath ./infrastructure/build/cdk/api-lambdas.zip -webAssets ./infrastructure/build/cdk/web -domainName johntipper.org -region ${{ secrets.AWS_REGION }} -targetAccount ${{ AWS_ACCOUNT }}' \
+          --profile blog \
+          --output build/cdk.out
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCOUNT: ${{ secrets.AWS_ACCOUNT }}
+
+```
+ 
 ### Status
 
 In our repository [README.md](https://github.com/john-tipper/johntipper.org/blob/master/README.md), we'll define an image, which GitHub will update whenever a build occurs.  That image will (hopefully) show a green badge showing that our build works. We can refer to that image using this syntax:
