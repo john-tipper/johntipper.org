@@ -65,7 +65,7 @@ jobs:
 
 #      - name: Deploy CDK
 #        run: |
-#          cdk deploy --app ./build/cdk.out --profile blog --require-approval never "*"
+#          cdk deploy --app ./build/cdk.out --require-approval never "*"
 #        if: github.ref == 'refs/heads/master'
 #        env:
 #          AWS_REGION: ${{ secrets.AWS_REGION }}
