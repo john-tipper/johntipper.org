@@ -36,7 +36,7 @@ When CDK creates the certificate, it may take a little while to complete. This i
 
 Let's create an S3 bucket for use as a website container.  CDK makes this super easy to do and the API is really nice to work with.
 
-```Java
+```java
 Bucket websiteBucket = Bucket.Builder.create(this, "WebsiteBucket")
                                      .bucketName(String.format("website-%s", props.getEnv().getAccount()))
                                      .encryption(BucketEncryption.UNENCRYPTED)
@@ -46,7 +46,7 @@ Bucket websiteBucket = Bucket.Builder.create(this, "WebsiteBucket")
 ```
 
 Now let's think about adding a CloudFront CDN in front of the bucket, so that the website contents are cached geographically close to readers.
-```Java
+```java
 OriginAccessIdentity webOai = OriginAccessIdentity.Builder.create(this, "WebOai")
                                                           .comment(String.format("OriginAccessIdentity for %s", stackConfig.getDomainName()))
                                                           .build();
@@ -91,7 +91,7 @@ We use the TLS certificate we created earlier and we define that users should be
 
 Now let's wrap this up by some housekeeping: we want the CDN to redirect HTTP to HTTPS and CloudFront requires a DNS entry at the apex level, so we create a DNS entry that points at our CDN distribution.
  
-```Java
+```java
 HttpsRedirect webHttpsRedirect = HttpsRedirect.Builder.create(this, "WebHttpsRedirect")
                                                       .certificate(websiteCertificate)
                                                       .recordNames(List.of(String.format("www.%s", stackConfig.getDomainName())))
@@ -114,7 +114,7 @@ So far, we've created infrastructure suitable for hosting a static website. Let'
 
 To keep thongs neat, we'll start by creating a separate CDK Construct to hold all of our API infrastructure. We do this by creating a Java class that extends from `Construct`:
 
-```Java
+```java
 public class HelloWorldApi extends Construct {
 
     private final IRestApi restApi;
@@ -195,7 +195,7 @@ apiGatewayRole.addToPolicy(PolicyStatement.Builder.create()
 
 ```
 
-Let's define our API using OpenAPI, where we define an endpoint hat the user will call and receive a hello world response.
+Let's define our API using OpenAPI, where we define an endpoint hat the user will call and receive a hello world response (we define the api endpoints to reside behind an initial path prefix of `/api`).
 
 ```yaml
 openapi: 3.0.0
