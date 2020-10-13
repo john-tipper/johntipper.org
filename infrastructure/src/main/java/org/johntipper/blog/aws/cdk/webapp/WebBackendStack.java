@@ -30,7 +30,7 @@ public class WebBackendStack extends Stack {
                                                                                     .subjectAlternativeNames(List.of(String.format("www.%s", stackConfig.getDomainName())))
                                                                                     .build();
 
-        HelloWorldApi helloWorldApi = new HelloWorldApi(this, "HelloWorldApi", props, stackConfig);
+//        HelloWorldApi helloWorldApi = new HelloWorldApi(this, "HelloWorldApi", props, stackConfig);
 
         // S3 bucket we'll use for storing our website in
         Bucket websiteBucket = Bucket.Builder.create(this, "WebsiteBucket")
@@ -62,16 +62,16 @@ public class WebBackendStack extends Stack {
                                                                                                                                                                        .originAccessIdentity(webOai)
                                                                                                                                                                        .s3BucketSource(websiteBucket)
                                                                                                                                                                        .build())
-                                                                                                                                         .build(),
-                                                                                                                      SourceConfiguration.builder()
-                                                                                                                                         .behaviors(List.of(Behavior.builder()
-                                                                                                                                                                    .pathPattern("api/*")
-                                                                                                                                                                    .allowedMethods(CloudFrontAllowedMethods.ALL)
-                                                                                                                                                                    .build()))
-                                                                                                                                         .customOriginSource(CustomOriginConfig.builder()
-                                                                                                                                                                               .domainName(String.format("%s.execute-api.%s.amazonaws.com", helloWorldApi.getRestApi().getRestApiId(), stackConfig.getRegion()))
-                                                                                                                                                                               .build())
-                                                                                                                                         .build()
+                                                                                                                                         .build()//,
+//                                                                                                                      SourceConfiguration.builder()
+//                                                                                                                                         .behaviors(List.of(Behavior.builder()
+//                                                                                                                                                                    .pathPattern("api/*")
+//                                                                                                                                                                    .allowedMethods(CloudFrontAllowedMethods.ALL)
+//                                                                                                                                                                    .build()))
+//                                                                                                                                         .customOriginSource(CustomOriginConfig.builder()
+//                                                                                                                                                                               .domainName(String.format("%s.execute-api.%s.amazonaws.com", helloWorldApi.getRestApi().getRestApiId(), stackConfig.getRegion()))
+//                                                                                                                                                                               .build())
+//                                                                                                                                         .build()
                                                                                                ))
                                                                                                .priceClass(PriceClass.PRICE_CLASS_100)
                                                                                                .viewerProtocolPolicy(ViewerProtocolPolicy.REDIRECT_TO_HTTPS)
