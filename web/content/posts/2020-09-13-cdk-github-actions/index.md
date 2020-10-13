@@ -1,7 +1,7 @@
 ---
 title: Integrating AWS CDK into GitHub Actions
 author: John Tipper
-date: 2020-09-12
+date: 2020-09-13
 hero: ./images/2006_0408Image30063.jpeg
 excerpt: Integrating AWS CDK into GitHub Actions
 ---
@@ -98,7 +98,7 @@ Now we're ready to define some steps which will build our project's CDK and gene
           popd
 ```
 
-Next step is to synthesize the CDK stack, which, as you'll recall, requires AWS credentials to perform a Route53 HostedZone lookup.
+Next step is to synthesize the CDK stack, which, as you'll recall, requires AWS credentials to perform a Route53 HostedZone lookup. We want to synthesize the CDK stack every time we push a change, as this is a good way of determining if there's an issue with our CDK: some errors won't be apparent until you try to synthesize them.
 
 ```yaml
       - name: Synth CDK
@@ -113,6 +113,19 @@ Next step is to synthesize the CDK stack, which, as you'll recall, requires AWS 
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_TARGET_ACCOUNT: ${{ secrets.AWS_TARGET_ACCOUNT }}
 
+```
+
+Finally, we want to deploy the synthesized CDK, if we're on the master branch:
+
+```yaml
+      - name: Deploy CDK
+        run: |
+          cdk deploy --app ./build/cdk.out --require-approval never "*"
+        if: github.ref == 'refs/heads/master'
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 ```
  
 ### Status
