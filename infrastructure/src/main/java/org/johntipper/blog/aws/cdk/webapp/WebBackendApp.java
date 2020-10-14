@@ -24,6 +24,17 @@ public class WebBackendApp {
 
         WebBackendStackConfig webStackConfig = WebBackendStackConfig.fromCommandLine(cmd);
 
+        LambdaEdgeCloudFrontRewriteStack lambdaEdgeCloudFrontRewriteStack = new LambdaEdgeCloudFrontRewriteStack(app, "LambdaEdgeCloudFrontRewriteStack",
+                                                                                                                 StackProps.builder()
+                                                                                                                           .env(Environment.builder()
+                                                                                                                                           .account(webStackConfig.getTargetAccount())
+                                                                                                                                           .region("us-east-1")
+                                                                                                                                           .build())
+                                                                                                                           .stackName("LambdaEdgeCloudFrontRewriteStack")
+                                                                                                                           .tags(Map.of("cdk", Boolean.toString(true)))
+                                                                                                                           .build(),
+                                                                                                                 webStackConfig);
+
         WebBackendStack webBackendStack = new WebBackendStack(app, "WebBackendStack",
                                                               StackProps.builder()
                                                                         .env(Environment.builder()
@@ -76,6 +87,13 @@ public class WebBackendApp {
         options.addOption(Option.builder(DOMAIN_NAME_KEY)
                                 .argName(DOMAIN_NAME_KEY)
                                 .desc("Domain name of the website.")
+                                .hasArg()
+                                .required(true)
+                                .build());
+
+        options.addOption(Option.builder(LAMBDA_EDGE_LAMBDA_PATH_KEY)
+                                .argName(LAMBDA_EDGE_LAMBDA_PATH_KEY)
+                                .desc("Path to the Lambda@Edge function for rewriting CloudFront requests.")
                                 .hasArg()
                                 .required(true)
                                 .build());

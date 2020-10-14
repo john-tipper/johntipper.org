@@ -50,6 +50,9 @@ task cdkPrepare(type: Copy) {
         into "web"
     }
 
+    from(file("lambdaEdge/")) {
+        into "lambdaEdge"
+    }
 
     into "${buildDir}/cdk"
 

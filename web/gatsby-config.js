@@ -32,6 +32,7 @@ module.exports = {
         contentAuthors: "content/authors",
         basePath: "/",
         authorsPage: true,
+        articlePermalinkFormat: ":slug/",
         sources: {
           local: true,
           // contentful: true,
