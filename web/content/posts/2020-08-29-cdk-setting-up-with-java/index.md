@@ -214,7 +214,7 @@ Detailed installation instructions for the CDK are [here](https://docs.aws.amazo
 
 ### AWS Credentials with multiple AWS accounts
 
-**UPDATE:** ignore this section, as things have come a long way with cross-account deployments using CDK.  Use [cdk-assume-role-credential-plugin](https://github.com/aws-samples/cdk-assume-role-credential-plugin), details [here](https://aws.amazon.com/blogs/devops/cdk-credential-plugin/), and see a later blog post by me for setting it up with CDK Pipelines.  
+**UPDATE: ignore this section, as things have come a long way with cross-account deployments using CDK.  Use [cdk-assume-role-credential-plugin](https://github.com/aws-samples/cdk-assume-role-credential-plugin), details [here](https://aws.amazon.com/blogs/devops/cdk-credential-plugin/), and see a later blog post by me for setting it up with CDK Pipelines.**  
 
 We are going to interact with the CDK command line tool in two ways: firstly, to synthesize a CloudFormation template that describes the infrastructure that we wish to create and secondly to initiate the deployment.  Those tasks are accomplished by means of the `cdk synth` and `cdk deploy` commands.
 
