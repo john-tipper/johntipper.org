@@ -17,18 +17,15 @@ public class WebBackendStackConfig {
 
     private final String lambdaEdgeLambdaPath;
 
-    private final String websiteAssetsPath;
-
     private final String targetAccount;
 
 
     private final String region;
 
 
-    public WebBackendStackConfig(String domainName, String apiLambdaPath, String websiteAssetsPath, String targetAccount, String region, String lambdaEdgeLambdaPath) {
+    public WebBackendStackConfig(String domainName, String apiLambdaPath, String targetAccount, String region, String lambdaEdgeLambdaPath) {
         this.domainName = domainName;
         this.apiLambdaPath = apiLambdaPath;
-        this.websiteAssetsPath = websiteAssetsPath;
         this.targetAccount = targetAccount;
         this.region = region;
         this.lambdaEdgeLambdaPath = lambdaEdgeLambdaPath;
@@ -40,10 +37,6 @@ public class WebBackendStackConfig {
 
     public String getApiLambdaPath() {
         return apiLambdaPath;
-    }
-
-    public String getWebsiteAssetsPath() {
-        return websiteAssetsPath;
     }
 
     public String getTargetAccount() {
@@ -59,6 +52,6 @@ public class WebBackendStackConfig {
     }
 
     public static WebBackendStackConfig fromCommandLine(CommandLine cmd) {
-        return new WebBackendStackConfig(cmd.getOptionValue(DOMAIN_NAME_KEY), cmd.getOptionValue(API_LAMBDA_PATH_KEY), cmd.getOptionValue(WEB_ASSETS_KEY), cmd.getOptionValue(TARGET_ACCOUNT_KEY), cmd.getOptionValue(REGION_KEY), cmd.getOptionValue(LAMBDA_EDGE_LAMBDA_PATH_KEY));
+        return new WebBackendStackConfig(cmd.getOptionValue(DOMAIN_NAME_KEY), cmd.getOptionValue(API_LAMBDA_PATH_KEY), cmd.getOptionValue(TARGET_ACCOUNT_KEY), cmd.getOptionValue(REGION_KEY), cmd.getOptionValue(LAMBDA_EDGE_LAMBDA_PATH_KEY));
     }
 }

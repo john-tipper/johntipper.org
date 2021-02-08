@@ -15,8 +15,6 @@ import software.amazon.awscdk.services.route53.patterns.HttpsRedirect;
 import software.amazon.awscdk.services.route53.targets.CloudFrontTarget;
 import software.amazon.awscdk.services.s3.Bucket;
 import software.amazon.awscdk.services.s3.BucketEncryption;
-import software.amazon.awscdk.services.s3.deployment.BucketDeployment;
-import software.amazon.awscdk.services.s3.deployment.Source;
 
 import java.io.IOException;
 import java.util.Date;
@@ -138,15 +136,6 @@ public class WebBackendStack extends Stack {
                                              .zone(hostedZone)
                                              .target(RecordTarget.fromAlias(new CloudFrontTarget(cloudFrontWebDistribution)))
                                              .build();
-
-        BucketDeployment websiteContent = BucketDeployment.Builder.create(this, "WebsiteContent")
-                                                                  .destinationBucket(websiteBucket)
-                                                                  .sources(List.of(Source.asset(stackConfig.getWebsiteAssetsPath())))
-                                                                  .distribution(cloudFrontWebDistribution)
-                                                                  .distributionPaths(List.of("/*"))
-                                                                  .memoryLimit(2048)
-                                                                  .build();
-
 
     }
 

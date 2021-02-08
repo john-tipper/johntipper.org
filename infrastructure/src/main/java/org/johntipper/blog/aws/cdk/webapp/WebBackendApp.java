@@ -77,13 +77,6 @@ public class WebBackendApp {
                                 .required(true)
                                 .build());
 
-        options.addOption(Option.builder(WEB_ASSETS_KEY)
-                                .argName(WEB_ASSETS_KEY)
-                                .desc("Path to the website assets.")
-                                .hasArg()
-                                .required(true)
-                                .build());
-
         options.addOption(Option.builder(DOMAIN_NAME_KEY)
                                 .argName(DOMAIN_NAME_KEY)
                                 .desc("Domain name of the website.")

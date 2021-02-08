@@ -26,7 +26,6 @@ jobs:
         run: |
           npm install -g aws-cdk@1.62.0 gatsby-cli
 
-
       - name: Set up JDK 1.11
         uses: actions/setup-java@v1
         with:
@@ -55,7 +54,7 @@ jobs:
         run: |
           ./gradlew cdkPrepare
           cdk synth \
-          --app 'java -jar ./infrastructure/build/cdk/infrastructure-all.jar -apiLambdaPath ./infrastructure/build/cdk/api-lambdas.zip -lambdaEdge ./infrastructure/build/cdk/lambdaEdge -webAssets ./infrastructure/build/cdk/web -domainName johntipper.org -region ${{ secrets.AWS_REGION }} -targetAccount ${{ secrets.AWS_TARGET_ACCOUNT }}' \
+          --app 'java -jar ./infrastructure/build/cdk/infrastructure-all.jar -apiLambdaPath ./infrastructure/build/cdk/api-lambdas.zip -lambdaEdge ./infrastructure/build/cdk/lambdaEdge -domainName johntipper.org -region ${{ secrets.AWS_REGION }} -targetAccount ${{ secrets.AWS_TARGET_ACCOUNT }}' \
           --output build/cdk.out
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -66,6 +65,25 @@ jobs:
       - name: Deploy CDK
         run: |
           cdk deploy --app ./build/cdk.out --require-approval never "*"
+        if: github.ref == 'refs/heads/master'
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Publish web assets
+        run: |
+          aws s3 --delete --exact-timestamps sync ./infrastructure/build/cdk/web/public/* s3://website-502171377804
+        if: github.ref == 'refs/heads/master'
+        env:
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Invalidate CloudFront
+        run: |
+          DISTRIBUTION_ID=$(aws cloudfront list-distributions --profile blog --output text --query 'DistributionList.Items[?contains(Aliases.Items, `johntipper.org`)]|[0].Id')
+          aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths '/*'
         if: github.ref == 'refs/heads/master'
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
