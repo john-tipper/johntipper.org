@@ -73,7 +73,7 @@ jobs:
 
       - name: Publish web assets
         run: |
-          aws s3 --delete --exact-timestamps sync ./web/public/* s3://website-502171377804
+          aws s3 sync --delete --exact-timestamps ./web/public/* s3://website-502171377804
         if: github.ref == 'refs/heads/master'
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
