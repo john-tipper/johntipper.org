@@ -82,7 +82,7 @@ jobs:
 
       - name: Invalidate CloudFront
         run: |
-          DISTRIBUTION_ID=$(aws cloudfront list-distributions --profile blog --output text --query 'DistributionList.Items[?contains(Aliases.Items, `johntipper.org`)]|[0].Id')
+          DISTRIBUTION_ID=$(aws cloudfront list-distributions --output text --query 'DistributionList.Items[?contains(Aliases.Items, `johntipper.org`)]|[0].Id')
           aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths '/*'
         if: github.ref == 'refs/heads/master'
         env:
